@@ -1,0 +1,16 @@
+body.bg-custom-gray {
+  background-color: #f4f6f8; /* putih keabu-abuan */
+}
+
+.text-primary {
+  color: #1e3a8a !important; /* biru agak tua */
+}
+
+.btn-tosca {
+  background-color: #20c997;
+  color: white;
+}
+
+.btn-tosca:hover {
+  background-color: #17b59e;
+}
