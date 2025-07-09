@@ -1,11 +1,15 @@
-<?= $this->include('layouts/header') ?>
-<?= $this->include('layouts/sidebar') ?>
+<!-- dashboard.php -->
+<?= view('layouts/header') ?>
+<?= view('layouts/sidebar') ?>
 
-<!-- Begin Page Content -->
 <div class="container-fluid">
-  <h1 class="h3 mb-4 text-gray-800">Dashboard</h1>
-  <p>Selamat datang di aplikasi TokoGilang!</p>
-</div>
-<!-- End Page Content -->
+    <h1 class="h3 mb-4 text-gray-800">Dashboard</h1>
 
-<?= $this->include('layouts/footer') ?>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            Selamat datang, <strong><?= esc($username) ?></strong>!
+        </div>
+    </div>
+</div>
+
+<?= view('layouts/footer') ?>
