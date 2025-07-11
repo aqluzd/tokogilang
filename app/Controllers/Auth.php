@@ -26,6 +26,7 @@ class Auth extends BaseController
                     'user_id' => $user['id'],
                     'username' => $user['username'],
                     'role_id' => $user['role_id'],
+                    'store_id' => $user['store_id'], // tambahkan ini
                     'logged_in' => true
                 ]);
                 return redirect()->to('/dashboard'); // Ganti dengan halaman utama Anda

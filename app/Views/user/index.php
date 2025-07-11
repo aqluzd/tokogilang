@@ -8,6 +8,7 @@
 
     <div class="card shadow-sm">
         <div class="card-body">
+            <a href="<?= site_url('user/create') ?>" class="btn btn-primary mb-3">Tambah User</a>
             <table class="table table-bordered table-striped">
                 <thead class="table-light">
                     <tr>
@@ -18,14 +19,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $no = 1; foreach ($users as $user) : ?>
+                    <?php foreach ($users as $index => $user): ?>
                         <tr>
-                            <td><?= $no++; ?></td>
-                            <td><?= esc($user['username']); ?></td>
-                            <td><?= esc($user['role_id']); ?></td>
+                            <td><?= $index + 1 ?></td>
+                            <td><?= esc($user['username']) ?></td>
+                            <td><?= esc($user['role_id']) ?></td>
                             <td>
-                                <a href="#" class="btn btn-warning btn-sm">Edit</a>
-                                <a href="#" class="btn btn-danger btn-sm">Hapus</a>
+                                <?php if ($user['username'] !== 'owner'): ?>
+                                    <a href="<?= site_url('user/edit/' . $user['id']) ?>" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="<?= site_url('user/delete/' . $user['id']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus user ini?')">Hapus</a>
+                                <?php else: ?>
+                                    <span class="text-muted">Akun Owner</span>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
