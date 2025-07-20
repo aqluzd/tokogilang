@@ -3,59 +3,89 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\StoreModel;
+use App\Models\RoleModel;
 
 class UserController extends BaseController
 {
     public function index()
     {
         $userModel = new UserModel();
-        $data['users'] = $userModel->where('username !=', 'owner')->findAll();
+        $data['users'] = $userModel->getUsersWithRole();
 
         return view('user/index', $data);
     }
 
     public function create()
     {
+        $storeModel = new \App\Models\StoreModel();
+        $roleModel = new \App\Models\RoleModel();
+
+        $rolesRaw = $roleModel->findAll();
+        $roles = [];
+
+        foreach ($rolesRaw as $r) {
+            // Ubah 'name' ke kolom yang sesuai di database, misalnya 'role_name'
+            $roles[$r['id']] = $r['role_name'];
+        }
+
         $data = [
             'title' => 'Tambah User',
-            'user' => null,
             'action' => site_url('user/store'),
-            'roles' => [
-                1 => 'Admin',
-                2 => 'Kasir',
-            ]
+            'stores' => $storeModel->findAll(),
+            'roles'  => $roles
         ];
 
         return view('user/form', $data);
     }
 
+
     public function store()
     {
-        $model = new UserModel();
+        $userModel = new UserModel();
 
         $data = [
             'username' => $this->request->getPost('username'),
-            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-            'role_id'  => $this->request->getPost('role_id')
+            'password' => $this->request->getPost('password'),
+            'name'     => $this->request->getPost('name'),
+            'role_id'  => $this->request->getPost('role_id'),
+            'store_id' => $this->request->getPost('store_id'),
+            'status'   => $this->request->getPost('status')
         ];
 
-        $model->insert($data);
-        return redirect()->to('/manajemen-user')->with('success', 'User berhasil ditambahkan');
+        // Cek apakah username sudah ada
+        $existing = $userModel->where('username', $data['username'])->first();
+        if ($existing) {
+            return redirect()->back()->withInput()->with('error', 'Username sudah digunakan!');
+        }
+
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        $userModel->insert($data);
+
+        return redirect()->to('/user')->with('success', 'User berhasil ditambahkan');
     }
 
     public function edit($id)
     {
-        $model = new UserModel();
-        $user = $model->find($id);
+        $userModel = new UserModel();
+        $storeModel = new StoreModel();
+        $roleModel = new RoleModel();
+
+        $user = $userModel->find($id);
+
+        // Mapping roles ke bentuk [id => name]
+        $rolesRaw = $roleModel->findAll();
+        $roles = [];
+        foreach ($rolesRaw as $r) {
+            $roles[$r['id']] = $r['name'];
+        }
 
         $data = [
-            'title' => 'Edit User',
-            'user' => $user,
+            'title'  => 'Edit User',
+            'user'   => $user,
             'action' => site_url('user/update/' . $id),
-            'roles' => [
-                1 => 'Admin',
-                2 => 'Kasir',
-            ]
+            'roles'  => $roles,
+            'stores' => $storeModel->findAll(),
         ];
 
         return view('user/form', $data);
@@ -64,9 +94,11 @@ class UserController extends BaseController
     public function update($id)
     {
         $model = new UserModel();
+
         $data = [
             'username' => $this->request->getPost('username'),
-            'role_id'  => $this->request->getPost('role_id')
+            'role_id'  => $this->request->getPost('role_id'),
+            'store_id' => $this->request->getPost('store_id'),
         ];
 
         if ($this->request->getPost('password')) {
@@ -76,6 +108,7 @@ class UserController extends BaseController
         $model->update($id, $data);
         return redirect()->to('/manajemen-user')->with('success', 'User berhasil diperbarui');
     }
+
     public function delete($id)
     {
         $model = new UserModel();

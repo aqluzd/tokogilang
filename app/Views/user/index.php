@@ -23,7 +23,7 @@
                         <tr>
                             <td><?= $index + 1 ?></td>
                             <td><?= esc($user['username']) ?></td>
-                            <td><?= esc($user['role_id']) ?></td>
+                            <td><?= $user->role_name ?></td>
                             <td>
                                 <?php if ($user['username'] !== 'owner'): ?>
                                     <a href="<?= site_url('user/edit/' . $user['id']) ?>" class="btn btn-warning btn-sm">Edit</a>
