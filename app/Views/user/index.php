@@ -15,6 +15,7 @@
                         <th>No</th>
                         <th>Nama Pegawai</th>
                         <th>Role</th>
+                        <th>Toko</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -24,6 +25,7 @@
                             <td><?= $index + 1 ?></td>
                             <td><?= esc($user->name) ?></td>
                             <td><?= esc($user->role_name) ?></td>
+                            <td><?= esc($user->store_name) ?></td>
                             <td>
                                 <?php if ($user->username != 'owner'): ?>
                                     <a href="<?= site_url('user/edit/' . $user->id) ?>" class="btn btn-warning btn-sm">Edit</a>
