@@ -24,7 +24,10 @@
                     <label for="username" class="form-label">Username</label>
                     <input type="text" name="username" class="form-control" value="<?= isset($user) ? esc($user['username']) : old('username') ?>" required>
                 </div>
-
+                <div class="mb-3">
+                    <label for="name">Nama Pegawai</label>
+                    <input type="text" class="form-control" id="name" name="name" value="<?= old('name', $user['name'] ?? '') ?>" required>
+                </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password <?= isset($user) ? '(Biarkan kosong jika tidak diubah)' : '' ?></label>
                     <input type="password" name="password" class="form-control" <?= isset($user) ? '' : 'required' ?>>

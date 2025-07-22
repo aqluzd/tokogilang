@@ -73,11 +73,11 @@ class UserController extends BaseController
 
         $user = $userModel->find($id);
 
-        // Mapping roles ke bentuk [id => name]
+        // Mapping roles ke bentuk [id => role_name]
         $rolesRaw = $roleModel->findAll();
         $roles = [];
         foreach ($rolesRaw as $r) {
-            $roles[$r['id']] = $r['name'];
+            $roles[$r['id']] = $r['role_name']; 
         }
 
         $data = [
@@ -91,12 +91,14 @@ class UserController extends BaseController
         return view('user/form', $data);
     }
 
+
     public function update($id)
     {
         $model = new UserModel();
 
         $data = [
             'username' => $this->request->getPost('username'),
+            'name'     => $this->request->getPost('name'),
             'role_id'  => $this->request->getPost('role_id'),
             'store_id' => $this->request->getPost('store_id'),
         ];

@@ -18,4 +18,5 @@ $routes->post('/manajemen-user/update/(:num)', 'UserController::update/$1');
 $routes->get('/user/create', 'UserController::create');
 $routes->post('/user/store', 'UserController::store');
 $routes->get('/user/delete/(:num)', 'UserController::delete/$1');
+$routes->get('user', 'UserController::index');
 

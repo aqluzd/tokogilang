@@ -8,5 +8,5 @@ class RoleModel extends Model
 {
     protected $table = 'roles'; // sesuaikan nama tabel kamu
     protected $primaryKey = 'id';
-    protected $allowedFields = ['name']; // sesuaikan kolom yang kamu izinkan
+    protected $allowedFields = ['role_name']; // sesuaikan kolom yang kamu izinkan
 }

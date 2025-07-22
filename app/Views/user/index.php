@@ -13,7 +13,7 @@
                 <thead class="table-light">
                     <tr>
                         <th>No</th>
-                        <th>Username</th>
+                        <th>Nama Pegawai</th>
                         <th>Role</th>
                         <th>Aksi</th>
                     </tr>
@@ -22,12 +22,12 @@
                     <?php foreach ($users as $index => $user): ?>
                         <tr>
                             <td><?= $index + 1 ?></td>
-                            <td><?= esc($user['username']) ?></td>
-                            <td><?= $user->role_name ?></td>
+                            <td><?= esc($user->name) ?></td>
+                            <td><?= esc($user->role_name) ?></td>
                             <td>
-                                <?php if ($user['username'] !== 'owner'): ?>
-                                    <a href="<?= site_url('user/edit/' . $user['id']) ?>" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="<?= site_url('user/delete/' . $user['id']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus user ini?')">Hapus</a>
+                                <?php if ($user->username != 'owner'): ?>
+                                    <a href="<?= site_url('user/edit/' . $user->id) ?>" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="<?= site_url('user/delete/' . $user->id) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus user ini?')">Hapus</a>
                                 <?php else: ?>
                                     <span class="text-muted">Akun Owner</span>
                                 <?php endif; ?>
