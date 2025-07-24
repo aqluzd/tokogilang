@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2025 at 12:39 PM
+-- Generation Time: Jul 24, 2025 at 11:06 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -59,6 +59,8 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `role_name`) VALUES
+(2, 'Admin'),
+(3, 'Kasir'),
 (1, 'Owner');
 
 -- --------------------------------------------------------
@@ -114,18 +116,22 @@ INSERT INTO `stores` (`id`, `name`, `address`) VALUES
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `username` varchar(100) NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `role_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `store_id` int(11) DEFAULT NULL
+  `store_id` int(11) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `role_id`, `created_at`, `store_id`) VALUES
-(1, 'owner', '$2y$10$eXexK4KKUZ3NADG/HgZ/le6Q2J8QTf/DVK9k6.iDdVghBeWwDn3GC', 1, '2025-07-05 07:41:15', NULL);
+INSERT INTO `users` (`id`, `username`, `name`, `password`, `role_id`, `created_at`, `store_id`, `status`) VALUES
+(1, 'owner', 'Gilang', '$2y$10$eXexK4KKUZ3NADG/HgZ/le6Q2J8QTf/DVK9k6.iDdVghBeWwDn3GC', 1, '2025-07-05 07:41:15', NULL, 1),
+(8, 'aceng', 'Aceng Suyono', '$2y$10$/8Lo2pMPJaGgxHnIWF8rB.BzKN5lXDi/.Et6UbJvBJ0A7a30ZS/Qe', 3, '2025-07-22 03:52:21', 1, NULL),
+(9, 'riri', 'Riri Rahmawati', '$2y$10$qz8KD/hpG1hm8OaisCTxiuO7mJmoKyg0LRIMIHMF1SRGLyeki6mgC', 3, '2025-07-22 04:05:43', 2, NULL);
 
 --
 -- Indexes for dumped tables
@@ -181,7 +187,7 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `role_permissions`
@@ -199,7 +205,7 @@ ALTER TABLE `stores`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables

@@ -30,7 +30,7 @@
     <!-- Menu Manajemen Toko -->
     <?php if ($role == 1): ?>
         <li class="nav-item">
-            <a class="nav-link" href="<?= base_url('store') ?>">
+            <a class="nav-link" href="<?= base_url('/store') ?>">
                 <i class="fas fa-store"></i>
                 <span>Manajemen Toko</span>
             </a>
