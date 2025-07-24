@@ -21,15 +21,14 @@ class Auth extends BaseController
 
         if ($user) {
             if (password_verify($password, $user['password'])) {
-                // Ambil permission juga nanti kalau sudah ada
                 $session->set([
                     'user_id' => $user['id'],
                     'username' => $user['username'],
                     'role_id' => $user['role_id'],
-                    'store_id' => $user['store_id'], // tambahkan ini
+                    'store_id' => $user['store_id'], 
                     'logged_in' => true
                 ]);
-                return redirect()->to('/dashboard'); // Ganti dengan halaman utama Anda
+                return redirect()->to('/dashboard'); 
             } else {
                 $session->setFlashdata('error', 'Password salah');
             }

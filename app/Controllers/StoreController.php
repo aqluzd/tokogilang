@@ -16,7 +16,7 @@ class StoreController extends BaseController
     public function index()
     {
         // hanya owner dan admin
-        if (!in_array(session()->get('role'), ['owner', 'admin'])) {
+        if (!in_array(session()->get('role_id'), [1, 2])) {
             return redirect()->to('/dashboard')->with('error', 'Akses ditolak');
         }
 
@@ -26,18 +26,28 @@ class StoreController extends BaseController
 
     public function create()
     {
+        // hanya owner dan admin
+        if (!in_array(session()->get('role_id'), [1, 2])) {
+            return redirect()->to('/dashboard')->with('error', 'Akses ditolak');
+        }
+
         return view('store/create');
     }
 
     public function store()
     {
+        if (!in_array(session()->get('role_id'), [1, 2])) {
+            return redirect()->to('/dashboard')->with('error', 'Akses ditolak');
+        }
+
         $this->storeModel->save([
-            'name' => $this->request->getPost('name')
+            'name' => $this->request->getPost('name'),
+            'address' => $this->request->getPost('address'),
         ]);
 
         return redirect()->to('/store')->with('success', 'Toko berhasil ditambahkan');
     }
-
+    
     public function edit($id)
     {
         $data['store'] = $this->storeModel->find($id);
