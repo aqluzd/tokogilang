@@ -25,7 +25,6 @@ class UserController extends BaseController
         $roles = [];
 
         foreach ($rolesRaw as $r) {
-            // Ubah 'name' ke kolom yang sesuai di database, misalnya 'role_name'
             $roles[$r['id']] = $r['role_name'];
         }
 

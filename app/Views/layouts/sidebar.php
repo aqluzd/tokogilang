@@ -27,6 +27,16 @@
         </li>
     <?php endif; ?>
 
+    <!-- Menu Manajemen Toko -->
+    <?php if ($role == 1): ?>
+        <li class="nav-item">
+            <a class="nav-link" href="<?= base_url('store') ?>">
+                <i class="fas fa-store"></i>
+                <span>Manajemen Toko</span>
+            </a>
+        </li>
+    <?php endif; ?>
+
     <?php if ($role == 2): ?>
         <!-- Menu khusus Kasir -->
         <li class="nav-item">
