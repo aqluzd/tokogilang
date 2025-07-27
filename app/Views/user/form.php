@@ -46,7 +46,7 @@
                         <?php endforeach ?>
                     </select>
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="store_id" class="form-label">Toko</label>
                     <select name="store_id" class="form-control">

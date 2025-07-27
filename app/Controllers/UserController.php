@@ -27,7 +27,7 @@ class UserController extends BaseController
         foreach ($rolesRaw as $r) {
             $roles[$r['id']] = $r['role_name'];
         }
-
+        unset($roles[1]);
         $data = [
             'title' => 'Tambah User',
             'action' => site_url('user/store'),

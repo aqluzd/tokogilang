@@ -15,57 +15,98 @@ class StoreController extends BaseController
 
     public function index()
     {
-        // hanya owner dan admin
+        // Hanya untuk role owner & admin
         if (!in_array(session()->get('role_id'), [1, 2])) {
             return redirect()->to('/dashboard')->with('error', 'Akses ditolak');
         }
 
-        $data['stores'] = $this->storeModel->findAll();
+        $data = [
+            'title' => 'Manajemen Toko',
+            'stores' => $this->storeModel->findAll()
+        ];
+
         return view('store/index', $data);
     }
 
     public function create()
     {
-        // hanya owner dan admin
-        if (!in_array(session()->get('role_id'), [1, 2])) {
-            return redirect()->to('/dashboard')->with('error', 'Akses ditolak');
-        }
+        $data = [
+            'title' => 'Tambah Toko',
+            'action' => site_url('/store/store')
+        ];
 
-        return view('store/create');
+        return view('store/form', $data);
     }
 
     public function store()
     {
-        if (!in_array(session()->get('role_id'), [1, 2])) {
-            return redirect()->to('/dashboard')->with('error', 'Akses ditolak');
+        $validation = \Config\Services::validation();
+
+        $rules = [
+            'name' => 'required',
+            'address' => 'required'
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('error', $validation->getErrors());
         }
 
-        $this->storeModel->save([
+        $this->storeModel->insert([
             'name' => $this->request->getPost('name'),
-            'address' => $this->request->getPost('address'),
+            'address' => $this->request->getPost('address')
         ]);
 
-        return redirect()->to('/store')->with('success', 'Toko berhasil ditambahkan');
+        return redirect()->to('/store')->with('success', 'Toko berhasil ditambahkan.');
     }
-    
+
     public function edit($id)
     {
-        $data['store'] = $this->storeModel->find($id);
-        return view('store/edit', $data);
+        $store = $this->storeModel->find($id);
+
+        if (!$store) {
+            return redirect()->to('/store')->with('error', 'Toko tidak ditemukan.');
+        }
+
+        $data = [
+            'title' => 'Edit Toko',
+            'store' => $store,
+            'action' => site_url('/store/update/' . $id)
+        ];
+
+        return view('store/form', $data);
     }
 
     public function update($id)
     {
+        $validation = \Config\Services::validation();
+
+        $rules = [
+            'name' => 'required',
+            'address' => 'required'
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('error', $validation->getErrors());
+        }
+
         $this->storeModel->update($id, [
-            'name' => $this->request->getPost('name')
+            'name' => $this->request->getPost('name'),
+            'address' => $this->request->getPost('address')
         ]);
 
-        return redirect()->to('/store')->with('success', 'Toko berhasil diupdate');
+        return redirect()->to('/store')->with('success', 'Toko berhasil diperbarui.');
     }
 
     public function delete($id)
     {
+        $store = $this->storeModel->find($id);
+
+        if (!$store) {
+            return redirect()->to('/store')->with('error', 'Toko tidak ditemukan.');
+        }
+
         $this->storeModel->delete($id);
-        return redirect()->to('/store')->with('success', 'Toko berhasil dihapus');
+
+        return redirect()->to('/store')->with('success', 'Toko berhasil dihapus.');
     }
 }

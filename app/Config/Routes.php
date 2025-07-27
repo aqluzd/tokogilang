@@ -25,9 +25,24 @@ $routes->get('user/edit/(:num)', 'UserController::edit/$1');
 $routes->post('user/update/(:num)', 'UserController::update/$1');
 
 //Route manajemen toko
-$routes->get('store', 'StoreController::index', ['filter' => 'auth']);
-$routes->get('store/create', 'StoreController::create', ['filter' => 'auth']);
-$routes->post('store/store', 'StoreController::store', ['filter' => 'auth']);
-$routes->get('store/edit/(:num)', 'StoreController::edit/$1', ['filter' => 'auth']);
-$routes->post('store/update/(:num)', 'StoreController::update/$1', ['filter' => 'auth']);
-$routes->get('store/delete/(:num)', 'StoreController::delete/$1', ['filter' => 'auth']);
+$routes->group('store', ['filter' => 'auth'], function($routes) {
+    $routes->get('/', 'StoreController::index');
+    $routes->get('create', 'StoreController::create');
+    $routes->post('store', 'StoreController::store');
+    $routes->get('edit/(:num)', 'StoreController::edit/$1');
+    $routes->post('update/(:num)', 'StoreController::update/$1');
+    $routes->get('delete/(:num)', 'StoreController::delete/$1');
+});
+//Route Store Selector
+$routes->get('store/setActive/(:num)', 'StoreController::setActive/$1');
+$routes->get('set-active-store/(:num)', 'StoreSelectorController::setActive/$1');
+
+//Route Product
+$routes->group('product', ['filter' => 'auth'], function($routes) {
+    $routes->get('/', 'ProductController::index');
+    $routes->get('create', 'ProductController::create');
+    $routes->post('store', 'ProductController::store');
+    $routes->get('edit/(:num)', 'ProductController::edit/$1');
+    $routes->post('update/(:num)', 'ProductController::update/$1');
+    $routes->get('delete/(:num)', 'ProductController::delete/$1');
+});

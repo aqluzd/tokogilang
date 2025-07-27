@@ -14,3 +14,25 @@ body.bg-custom-gray {
 .btn-tosca:hover {
   background-color: #17b59e;
 }
+.nav-link.dropdown-toggle {
+    border: none;
+    background: none;
+    font-weight: 500;
+}
+
+.navbar-nav .dropdown-menu {
+    /* Jika kamu ingin mendorong konten ke bawah, dropdown-menu default sudah berada di bawah navbar */
+    margin-top: 0.5rem;
+    /* Atur padding atau indentasi jika diperlukan */
+}
+
+.navbar-nav .dropdown-item {
+    padding-left: 1.5rem; /* contoh untuk sedikit mengindent */
+}
+.custom-dropdown {
+    position: static !important;
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    border: none;
+}
