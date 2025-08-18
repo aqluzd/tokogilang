@@ -10,73 +10,35 @@ class ProductController extends BaseController
     public function index()
     {
         $productModel = new ProductModel();
+        $storeModel   = new StoreModel();
 
-        $storeId = session()->get('active_store_id');
-        $products = $productModel->where('store_id', $storeId)->findAll();
+        $roleId = session()->get('role_id');
+        $activeStoreId = session()->get('active_store_id');
+
+        if (in_array($roleId, [1, 2])) {
+            // Owner & Admin → bisa ganti store
+            if (!$activeStoreId) {
+                // Kalau belum pilih toko → default ambil toko pertama
+                $firstStore = $storeModel->first();
+                if ($firstStore) {
+                    $activeStoreId = $firstStore['id'];
+                    session()->set('active_store_id', $activeStoreId);
+                }
+            }
+        } else {
+            // Kasir → hanya toko sesuai session
+            if (!$activeStoreId) {
+                return redirect()->to('/store/setActive/' . session()->get('store_id'));
+            }
+        }
+
+        // Ambil produk sesuai store
+        $products = $productModel->where('store_id', $activeStoreId)->findAll();
 
         return view('product/index', [
-            'title' => 'Daftar Produk',
-            'products' => $products
+            'products' => $products,
+            'stores'   => $storeModel->findAll(),
+            'activeStoreId' => $activeStoreId,
         ]);
-        if (!$storeId) {
-            return redirect()->to('/')->with('error', 'Silakan pilih toko terlebih dahulu.');
-        }   
-    }
-
-    public function create()
-    {
-        return view('product/form', [
-            'title' => 'Tambah Produk',
-            'action' => site_url('product/store')
-        ]);
-    }
-
-    public function store()
-    {
-        $productModel = new ProductModel();
-
-        $productModel->insert([
-            'store_id'   => session()->get('active_store_id'),
-            'name'       => $this->request->getPost('name'),
-            'buy_price'  => $this->request->getPost('buy_price'),
-            'sell_price' => $this->request->getPost('sell_price'),
-            'stock'      => $this->request->getPost('stock'),
-        ]);
-
-        return redirect()->to('/product')->with('success', 'Produk berhasil ditambahkan');
-    }
-
-    public function edit($id)
-    {
-        $productModel = new ProductModel();
-        $product = $productModel->find($id);
-
-        return view('product/form', [
-            'title'  => 'Edit Produk',
-            'action' => site_url('product/update/' . $id),
-            'product' => $product
-        ]);
-    }
-
-    public function update($id)
-    {
-        $productModel = new ProductModel();
-
-        $productModel->update($id, [
-            'name'       => $this->request->getPost('name'),
-            'buy_price'  => $this->request->getPost('buy_price'),
-            'sell_price' => $this->request->getPost('sell_price'),
-            'stock'      => $this->request->getPost('stock'),
-        ]);
-
-        return redirect()->to('/product')->with('success', 'Produk berhasil diperbarui');
-    }
-
-    public function delete($id)
-    {
-        $productModel = new ProductModel();
-        $productModel->delete($id);
-
-        return redirect()->to('/product')->with('success', 'Produk berhasil dihapus');
     }
 }

@@ -1,52 +1,59 @@
-<?= $this->include('layouts/header'); ?>
-<?= $this->include('layouts/sidebar'); ?>
+<?= $this->extend('layouts/main') ?>
+
 <?= $this->section('content') ?>
 
-<?php if (session()->getFlashdata('success')): ?>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <?= session()->getFlashdata('success') ?>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-<?php endif; ?>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>Manajemen Produk</h4>
+    <?php if (in_array(session()->get('role_id'), [1, 2])): ?>
+        <form>
+            <select name="store_select" class="form-control"
+                    onchange="window.location.href=this.value;">
+                <option value="#">-- Pilih Toko --</option>
+                <?php foreach ($stores as $store): ?>
+                    <option value="<?= site_url('set-active-store/' . $store['id']) ?>"
+                        <?= ($activeStoreId == $store['id']) ? 'selected' : '' ?>>
+                        <?= esc($store['name']) ?>
+                    </option>
+                <?php endforeach ?>
+            </select>
+        </form>
+    <?php else: ?>
+        <span class="badge bg-primary">
+            <?= esc(array_column($stores, 'name', 'id')[$activeStoreId] ?? 'Toko Tidak Ditemukan') ?>
+        </span>
+    <?php endif; ?>
+</div>
 
-<h1 class="h3 mb-4"><?= $title ?></h1>
-
-<a href="<?= site_url('product/create') ?>" class="btn btn-primary mb-3">Tambah Produk</a>
-
-<?php if (session()->getFlashdata('success')): ?>
-    <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
-<?php endif; ?>
-
-<div class="table-responsive">
-    <table class="table table-bordered table-striped">
-        <thead class="table-light">
-            <tr>
-                <th>No</th>
-                <th>Nama Produk</th>
-                <th>Harga Beli</th>
-                <th>Harga Jual</th>
-                <th>Stok</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($products as $index => $p): ?>
+<div class="card shadow">
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <td><?= $index + 1 ?></td>
-                    <td><?= esc($p['name']) ?></td>
-                    <td>Rp<?= number_format($p['buy_price'], 0, ',', '.') ?></td>
-                    <td>Rp<?= number_format($p['sell_price'], 0, ',', '.') ?></td>
-                    <td><?= $p['stock'] ?></td>
-                    <td>
-                        <a href="<?= site_url('product/edit/' . $p['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="<?= site_url('product/delete/' . $p['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin hapus produk ini?')">Hapus</a>
-                    </td>
+                    <th>Nama Produk</th>
+                    <th>Harga</th>
+                    <th>Stok</th>
+                    <th>Aksi</th>
                 </tr>
-            <?php endforeach ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php if (!empty($products)): ?>
+                    <?php foreach ($products as $product): ?>
+                        <tr>
+                            <td><?= esc($product['name']) ?></td>
+                            <td><?= number_format($product['price'], 0, ',', '.') ?></td>
+                            <td><?= esc($product['stock']) ?></td>
+                            <td>
+                                <a href="<?= site_url('product/edit/'.$product['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="<?= site_url('product/delete/'.$product['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Hapus produk ini?')">Hapus</a>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                <?php else: ?>
+                    <tr><td colspan="4" class="text-center">Belum ada produk</td></tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <?= $this->endSection() ?>

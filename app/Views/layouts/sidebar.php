@@ -37,22 +37,16 @@
         </li>
     <?php endif; ?>
 
-    <?php if (in_array(session()->get('role_id'), [1, 2])): ?>
-        <?php
-            $storeModel = new \App\Models\StoreModel();
-            $stores = $storeModel->findAll();
-            $activeStoreId = session()->get('active_store_id');
-        ?>
-        <form class="px-3 pb-2">
-            <select name="store_select" class="form-control form-control-sm" style="width: 100%;" onchange="window.location.href=this.value;">
-                <option value="#">-- Pilih Toko --</option>
-                <?php foreach ($stores as $store): ?>
-                    <option value="<?= site_url('set-active-store/' . $store['id']) ?>" <?= ($activeStoreId == $store['id']) ? 'selected' : '' ?>>
-                        <?= esc($store['name']) ?>
-                    </option>
-                <?php endforeach ?>
-            </select>
-        </form>
+    <!-- Menu Manajemen Produk -->    
+    <?php if (in_array(session()->get('role_id'), [1, 2, 3])): ?>
+        <li class="nav-item">
+            <a class="nav-link" href="<?= site_url('product') ?>">
+                <i class="fas fa-box"></i>
+                <span>Manajemen Produk</span>
+            </a>
+        </li>
+    <?php endif; ?>
+       
     
     <?php if ($role == 2): ?>
         <!-- Menu khusus Kasir -->
@@ -74,4 +68,3 @@
         </li>
     <?php endif; ?>
 </ul>
-<?php endif; ?>
