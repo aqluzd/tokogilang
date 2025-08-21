@@ -17,6 +17,15 @@
         </a>
     </li>
 
+    <!-- Divider -->
+
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Manajemen
+    </div>
+    
     <?php if ($role == 1): ?>
         <!-- Menu khusus Owner -->
         <li class="nav-item">
@@ -46,7 +55,14 @@
             </a>
         </li>
     <?php endif; ?>
-       
+    <!-- Nav Item - Supplier -->
+    <li class="nav-item">
+        <a class="nav-link" href="<?= base_url('supplier'); ?>">
+            <i class="fas fa-truck"></i>
+            <span>Manajemen Supplier</span>
+        </a>
+    </li>
+     
     
     <?php if ($role == 2): ?>
         <!-- Menu khusus Kasir -->

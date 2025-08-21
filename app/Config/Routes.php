@@ -46,3 +46,13 @@ $routes->group('product', ['filter' => 'auth'], function($routes) {
     $routes->post('update/(:num)', 'ProductController::update/$1');
     $routes->get('delete/(:num)', 'ProductController::delete/$1');
 });
+
+//Route Supplier
+$routes->group('supplier', ['filter' => 'auth'], function($routes) {
+    $routes->get('/', 'SupplierController::index');
+    $routes->get('create', 'SupplierController::create');
+    $routes->post('store', 'SupplierController::store');
+    $routes->get('edit/(:num)', 'SupplierController::edit/$1');
+    $routes->post('update/(:num)', 'SupplierController::update/$1');
+    $routes->get('delete/(:num)', 'SupplierController::delete/$1');
+});
