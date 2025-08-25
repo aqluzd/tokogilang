@@ -40,11 +40,11 @@ $routes->get('set-active-store/(:num)', 'StoreSelectorController::setActive/$1')
 //Route Product
 $routes->group('product', ['filter' => 'auth'], function($routes) {
     $routes->get('/', 'ProductController::index');
-    $routes->get('create', 'ProductController::create');
-    $routes->post('store', 'ProductController::store');
-    $routes->get('edit/(:num)', 'ProductController::edit/$1');
-    $routes->post('update/(:num)', 'ProductController::update/$1');
-    $routes->get('delete/(:num)', 'ProductController::delete/$1');
+    $routes->get('product/create', 'ProductController::create');
+    $routes->post('product/store', 'ProductController::store');
+    $routes->get('product/edit/(:num)', 'ProductController::edit/$1');
+    $routes->post('product/update/(:num)', 'ProductController::update/$1');
+    $routes->get('product/delete/(:num)', 'ProductController::delete/$1');
 });
 
 //Route Supplier
